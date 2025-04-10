@@ -1,0 +1,72 @@
+1.5.1: Kernel Mode vs. User Mode
+(1) Reading from disk
+I learned that disk access always goes through the OS, which means it needs kernel mode. A normal user-mode process has to call a system function (like read()), and under the hood, the OS takes over in kernel mode to talk to hardware.
+
+(2) Reading the hardware clock
+Similarly, querying hardware time usually needs a kernel-mode operation. Even though in user code we might call something like time(NULL), that still requires the OS to get the actual clock value from privileged hardware registers.
+
+1.5.2: Purpose of System Calls + Examples
+Purpose
+System calls are how my program requests things the OS must do in kernel mode, like creating processes, doing file I/O, or managing memory. They’re basically the “gateway” from user space to the OS.
+
+Categories + Examples
+
+Process Control: fork() (to create new processes), exec() (replace current process image).
+
+File Management: open() (open files), read() (read from an open file descriptor).
+
+Device Management: ioctl() (configure devices), or again read() if it’s from a device file.
+
+Communication: pipe() (for pipes), socket() (for network connections).
+
+Information: uname() (system info), gettimeofday() (current time).
+
+1.5.3: Possible Outputs of the Code
+c
+Copy
+Edit
+int ret = fork();
+if (ret == 0) {
+    printf("Hello1\n");
+    exec("some_executable");
+    printf("Hello2\n");
+} else if (ret > 0) {
+    wait();
+    printf("Hello3\n");
+} else {
+    printf("Hello4\n");
+}
+
+fork() fails (ret < 0):
+
+Prints “Hello4” and nothing else.
+
+fork() succeeds, exec() succeeds:
+
+Child prints “Hello1”, then exec(...) replaces its code, so it never gets to “Hello2”.
+
+Parent waits, then prints “Hello3”.
+
+Output is:
+
+nginx
+Copy
+Edit
+Hello1
+Hello3
+fork() succeeds, exec() fails:
+
+Child prints “Hello1”, exec fails, so it continues and prints “Hello2”.
+
+Parent waits, then prints “Hello3”.
+
+Output is:
+
+nginx
+Copy
+Edit
+Hello1
+Hello2
+Hello3
+(Ignoring any output from “some_executable” itself.)
+

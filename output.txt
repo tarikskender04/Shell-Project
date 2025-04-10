@@ -1,0 +1,9 @@
+advanced_prompt
+advanced_prompt.c
+getname
+images
+mynotes
+mynotes.c
+output.txt
+shellinterface
+shellinterface.c
