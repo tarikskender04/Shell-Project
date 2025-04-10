@@ -231,6 +231,8 @@ gcc src/main.c src/builtins.c src/parse.c -o myShell
 <div>
   <img src="images/shell_example1.png" alt="Shell Example" width="600"> -->
   <img src="images/shell_example2.png" alt="Shell Example" width="600"> -->
+  <img src="images/shell_example3.png" alt="Shell Example" width="600"> -->
+  <img src="images/shell_example4.png" alt="Shell Example" width="600"> -->
 </div>
 
 <h2 id="implementation-details">Implementation Details</h2>
